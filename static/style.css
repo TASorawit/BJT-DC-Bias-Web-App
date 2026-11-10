@@ -48,6 +48,20 @@ main {
   color: #113c60;
 }
 
+/* Schematic sits above the form/results columns and scales responsively */
+.schematic-panel { grid-column: 1 / -1; }
+
+.schematic-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.schematic-wrap svg {
+  width: 100%;
+  max-width: 460px;
+  height: auto;
+}
+
 label {
   display: block;
   margin: 12px 0 4px;

@@ -15,6 +15,24 @@ class TestWeb(unittest.TestCase):
         self.assertIn(b"VCC", r.data)
         self.assertIn(b'name="r1"', r.data)
 
+    def test_get_shows_circuit_schematic(self):
+        r = self.client.get("/")
+        self.assertEqual(r.status_code, 200)
+        self.assertIn(b'id="circuit-schematic"', r.data)
+        self.assertIn(b'data-node="vb"', r.data)
+
+    def test_schematic_shows_node_values_after_post(self):
+        r = self.client.post("/calculate", data=VALID)
+        self.assertEqual(r.status_code, 200)
+        self.assertIn(b'data-node="vb">VB = 1.942 V</text>', r.data)
+        self.assertIn(b'data-node="vce">VCE = 8.052 V</text>', r.data)
+
+    def test_schematic_values_change_with_input(self):
+        first = self.client.post("/calculate", data=VALID)
+        second = self.client.post("/calculate", data={**VALID, "vbe": "0.60"})
+        self.assertIn(b'data-node="vb">VB = 1.942 V</text>', first.data)
+        self.assertIn(b'data-node="vb">VB = 1.927 V</text>', second.data)
+
     def test_post_valid_returns_reference_results(self):
         r = self.client.post("/calculate", data=VALID)
         self.assertEqual(r.status_code, 200)
@@ -26,6 +44,11 @@ class TestWeb(unittest.TestCase):
         r = self.client.post("/calculate", data={**VALID, "r1": "abc"})
         self.assertEqual(r.status_code, 200)
         self.assertIn(b"must be a number", r.data)
+
+    def test_post_non_positive_shows_error(self):
+        r = self.client.post("/calculate", data={**VALID, "vcc": "-5"})
+        self.assertEqual(r.status_code, 200)
+        self.assertIn(b"must be greater than 0", r.data)
 
     def test_post_blank_field_shows_error(self):
         r = self.client.post("/calculate", data={**VALID, "vcc": ""})
