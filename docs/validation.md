@@ -62,14 +62,16 @@ Region check: VTH (2.164 V) > VBE (0.70 V) and VCE (8.052 V) > 0.2 V
 
 ## Automated tests
 
-`py -m unittest discover -s tests -v` → **13 tests, all OK**
+`py -m unittest discover -s tests -v` → **17 tests, all OK**
 
 - 7 engineering tests (`tests/test_dc_bias.py`): reference point,
   cutoff, saturation, VTH=VBE boundary, large β, non-positive inputs
   (8 sub-cases), non-numeric input
-- 6 HTTP tests (`tests/test_web.py`): GET form, POST reference results,
+- 10 HTTP tests (`tests/test_web.py`): GET form, POST reference results,
   POST non-numeric, POST blank field, POST omitted field, POST cutoff
-  warning — all via the Flask test client
+  warning, POST non-positive input, GET circuit schematic, schematic
+  node values after POST, schematic values change with input — all via
+  the Flask test client
 
 ## Reproducibility (A7)
 

@@ -91,8 +91,9 @@ happens on the server.)
 python -m unittest discover -s tests -v
 ```
 
-13 tests: 7 engineering-math cases in `tests/test_dc_bias.py` and 6
-HTTP-route cases in `tests/test_web.py` (Flask test client).
+17 tests: 7 engineering-math cases in `tests/test_dc_bias.py` and 10
+HTTP-route cases in `tests/test_web.py` (Flask test client), including
+the live circuit-schematic value tests.
 
 ## Inputs and outputs
 
