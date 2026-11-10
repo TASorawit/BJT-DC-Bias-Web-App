@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BJT DC Bias Calculator — Voltage Divider</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header>
+    <h1>BJT DC Bias Calculator</h1>
+    <p>NPN Common Emitter · Voltage-Divider Bias · Forward-Active Approximation (fixed β, fixed V<sub>BE</sub>)</p>
+  </header>
+
+  <main>
+    <section class="panel form-panel">
+      <h2>Circuit Parameters</h2>
+      <form method="post" action="{{ url_for('calculate') }}">
+        <label for="vcc">VCC [V]</label>
+        <input type="text" id="vcc" name="vcc" value="{{ form['vcc'] }}" inputmode="decimal">
+
+        <label for="r1">R1 [kΩ]</label>
+        <input type="text" id="r1" name="r1" value="{{ form['r1'] }}" inputmode="decimal">
+
+        <label for="r2">R2 [kΩ]</label>
+        <input type="text" id="r2" name="r2" value="{{ form['r2'] }}" inputmode="decimal">
+
+        <label for="rc">RC [kΩ]</label>
+        <input type="text" id="rc" name="rc" value="{{ form['rc'] }}" inputmode="decimal">
+
+        <label for="re">RE [kΩ]</label>
+        <input type="text" id="re" name="re" value="{{ form['re'] }}" inputmode="decimal">
+
+        <label for="beta">β (current gain)</label>
+        <input type="text" id="beta" name="beta" value="{{ form['beta'] }}" inputmode="decimal">
+
+        <label for="vbe">VBE [V]</label>
+        <input type="text" id="vbe" name="vbe" value="{{ form['vbe'] }}" inputmode="decimal">
+
+        <button type="submit">Calculate DC Bias</button>
+      </form>
+      <p class="hint">R1: VCC→Base · R2: Base→GND · RC: VCC→Collector · RE: Emitter→GND</p>
+    </section>
+
+    <section class="panel results-panel">
+      <h2>DC Operating Point</h2>
+
+      {% if error %}
+        <div class="box error-box">
+          <strong>Input error:</strong> {{ error }}
+        </div>
+      {% endif %}
+
+      {% if results %}
+        {% if results.warnings %}
+          <div class="box warning-box">
+            <ul>
+              {% for w in results.warnings %}
+                <li>{{ w }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+
+        <p>
+          Operating region:
+          <span class="badge badge-{{ results.region }}">{{ results.region | replace('forward-active', 'Forward-Active') | replace('cutoff', 'Cutoff') | replace('saturation', 'Saturation') }}</span>
+        </p>
+
+        <table>
+          <thead>
+            <tr><th>Quantity</th><th>Value</th><th>Unit</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>VTH (Thevenin voltage)</td><td>{{ '%.3f' | format(results.vth) }}</td><td>V</td></tr>
+            <tr><td>RTH (Thevenin resistance)</td><td>{{ '%.3f' | format(results.rth / 1000) }}</td><td>kΩ</td></tr>
+            <tr><td>IB (base current)</td><td>{{ '%.3f' | format(results.ib * 1e6) }}</td><td>µA</td></tr>
+            <tr><td>IC (collector current)</td><td>{{ '%.3f' | format(results.ic * 1000) }}</td><td>mA</td></tr>
+            <tr><td>IE (emitter current)</td><td>{{ '%.3f' | format(results.ie * 1000) }}</td><td>mA</td></tr>
+            <tr><td>VB (base voltage)</td><td>{{ '%.3f' | format(results.vb) }}</td><td>V</td></tr>
+            <tr><td>VE (emitter voltage)</td><td>{{ '%.3f' | format(results.ve) }}</td><td>V</td></tr>
+            <tr><td>VC (collector voltage)</td><td>{{ '%.3f' | format(results.vc) }}</td><td>V</td></tr>
+            <tr><td>VCE (collector-emitter)</td><td>{{ '%.3f' | format(results.vce) }}</td><td>V</td></tr>
+          </tbody>
+        </table>
+      {% elif not error %}
+        <p class="hint">Enter the circuit parameters and press <strong>Calculate DC Bias</strong>.</p>
+      {% endif %}
+    </section>
+  </main>
+
+  <footer>
+    <p>ENG29 2121 · Lab 02 · Forward-Active Approximation — results outside the active region are flagged, not simulated.</p>
+  </footer>
+</body>
+</html>

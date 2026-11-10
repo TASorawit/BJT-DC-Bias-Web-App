@@ -1,0 +1,133 @@
+/* BJT DC Bias Calculator — Lab 02 presentation only (no logic here) */
+
+:root {
+  --ink: #17344b;
+  --muted: #546d83;
+  --line: #d3e0ec;
+  --paper: #f5f8fc;
+  --accent: #1d638b;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font: 16px/1.6 Tahoma, "Noto Sans Thai", "Leelawadee UI", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+header {
+  background: linear-gradient(115deg, #0c304f, #20577d 70%, #0c6e79);
+  color: white;
+  padding: 28px 24px;
+}
+
+header h1 { margin: 0 0 6px; font-size: 1.6rem; }
+header p { margin: 0; color: #ddf0fd; font-size: 0.95rem; }
+
+main {
+  max-width: 1000px;
+  margin: 24px auto;
+  padding: 0 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.panel {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 20px 24px;
+}
+
+.panel h2 {
+  margin: 0 0 14px;
+  font-size: 1.15rem;
+  color: #113c60;
+}
+
+label {
+  display: block;
+  margin: 12px 0 4px;
+  font-weight: bold;
+  font-size: 0.92rem;
+}
+
+input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font: inherit;
+}
+
+input:focus { outline: 2px solid var(--accent); border-color: var(--accent); }
+
+button {
+  margin-top: 18px;
+  width: 100%;
+  padding: 11px 16px;
+  font: inherit;
+  font-weight: bold;
+  color: white;
+  background: var(--accent);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover { background: #155070; }
+
+.hint { color: var(--muted); font-size: 0.88rem; margin: 10px 0 0; }
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.95rem;
+}
+
+th, td {
+  border: 1px solid var(--line);
+  padding: 8px 10px;
+  text-align: left;
+}
+
+th { background: #e6f1fa; color: #123e5c; }
+
+td:nth-child(2) { font-variant-numeric: tabular-nums; font-weight: bold; }
+td:nth-child(3) { color: var(--muted); }
+
+.box {
+  padding: 12px 15px;
+  border-radius: 0 6px 6px 0;
+  margin: 0 0 14px;
+}
+
+.error-box { background: #fdecec; border-left: 4px solid #c0392b; color: #7b241c; }
+.warning-box { background: #fff4e9; border-left: 4px solid #b85c2c; color: #7a3d1d; }
+.warning-box ul { margin: 0; padding-left: 18px; }
+
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+.badge-forward-active { background: #e9f6f2; color: #178875; border: 1px solid #178875; }
+.badge-cutoff { background: #eee; color: #555; border: 1px solid #888; }
+.badge-saturation { background: #fff4e9; color: #b85c2c; border: 1px solid #b85c2c; }
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.8rem;
+  padding: 18px;
+}
+
+@media (max-width: 760px) {
+  main { grid-template-columns: 1fr; }
+}
